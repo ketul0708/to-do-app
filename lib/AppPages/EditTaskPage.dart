@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_1/Models/TaskList.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../Models/Task.dart';
+import 'package:http/http.dart' as http;
 
 class EditTaskPage extends StatefulWidget{
   const EditTaskPage({super.key});
@@ -17,6 +20,8 @@ class EditTaskPage extends StatefulWidget{
 }
 
 class EditTaskPageState extends State<EditTaskPage>{
+
+  Task originalTask = Task(title: editTask.title, desc: editTask.desc, priority: editTask.priority, deadline: editTask.deadline,);
   final TextEditingController _titleTextController = TextEditingController(text: editTask.title);
   final TextEditingController _descTextController = TextEditingController(text: editTask.desc);
   String title = editTask.title;
@@ -31,6 +36,35 @@ class EditTaskPageState extends State<EditTaskPage>{
     }
     else{
       return true;
+    }
+  }
+
+  void removeTask(Task task) async {
+    final url = Uri.parse('http://localhost:3000/todo/removetasklist/123');
+    var res = await http.put(
+        url,
+        headers: <String, String>{'Content-Type': 'application/json'},
+        body: jsonEncode({'task':[task.title, task.desc, task.priority, task.deadline]})
+    );
+
+    debugPrint(res.body.toString());
+  }
+
+  void addTask(Task task) async {
+    const String apiUrl = 'http://localhost:3000/todo/tasklist/123';
+
+    final response = await http.put(
+      Uri.parse(apiUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'task':[task.title, task.desc, task.priority, task.deadline]
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint('Item added successfully');
+    } else {
+      debugPrint('Failed to add item. Error: ${response.statusCode}');
     }
   }
 
@@ -172,14 +206,13 @@ class EditTaskPageState extends State<EditTaskPage>{
               child: ElevatedButton(
                 onPressed: () {
                   if(validateForm()){
-                    debugPrint(editIndex.toString());
-                    tasklist.tasklist[editIndex]=Task(
-                            title: _titleTextController.text,
-                            desc: _descTextController.text,
-                            priority: selectedPriority,
-                            deadline: selectedDate
-                        );
-                    tasklistProvider.setTasklist(tasklist);
+                    removeTask(originalTask);
+                    addTask(Task(
+                        title: _titleTextController.text,
+                        desc: _descTextController.text,
+                        priority: selectedPriority,
+                        deadline: selectedDate
+                    ));
                     context.go("/home");
                   }
                   else{

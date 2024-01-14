@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,7 +35,7 @@ class NewTaskPageState extends State<NewTaskPage>{
     }
   }
 
-  Future<void> _addItem(Task task) async {
+  Future<void> addTask(Task task) async {
     const String apiUrl = 'http://localhost:3000/todo/tasklist/123';
 
     final response = await http.put(
@@ -47,7 +46,7 @@ class NewTaskPageState extends State<NewTaskPage>{
       }),
     );
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       debugPrint('Item added successfully');
     } else {
       debugPrint('Failed to add item. Error: ${response.statusCode}');
@@ -200,7 +199,7 @@ class NewTaskPageState extends State<NewTaskPage>{
                         )
                     );
                     tasklistProvider.setTasklist(tasklist);
-                    _addItem(Task(
+                    addTask(Task(
                         title: _titleTextController.text,
                         desc: _descTextController.text,
                         priority: selectedPriority,

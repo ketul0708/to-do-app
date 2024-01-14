@@ -9,6 +9,7 @@ import 'package:flutter_1/Common/ErrorBox.dart';
 import 'package:flutter_1/Models/TaskList.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/Task.dart';
 import 'package:http/http.dart' as http;
 
@@ -40,7 +41,9 @@ class EditTaskPageState extends State<EditTaskPage>{
   }
 
   void removeTask(Task task) async {
-    final url = Uri.parse('http://localhost:3000/todo/removetasklist/123');
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? username = sharedPreferences.getString('userId');
+    final url = Uri.parse('http://localhost:3000/todo/removetasklist/$username');
     var res = await http.put(
         url,
         headers: <String, String>{'Content-Type': 'application/json'},
@@ -51,7 +54,9 @@ class EditTaskPageState extends State<EditTaskPage>{
   }
 
   void addTask(Task task) async {
-    const String apiUrl = 'http://localhost:3000/todo/tasklist/123';
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? username = sharedPreferences.getString('userId');
+    String apiUrl = 'http://localhost:3000/todo/tasklist/$username';
 
     final response = await http.put(
       Uri.parse(apiUrl),

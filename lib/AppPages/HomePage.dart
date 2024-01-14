@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_1/Models/TaskList.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/Task.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,7 +21,9 @@ class HomePageState extends State<HomePage> {
 
   List<dynamic> tasklist = [];
   void getTasklist() async {
-    final url = Uri.parse('http://localhost:3000/todo/tasklist/123');
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? username = sharedPreferences.getString('userId');
+    final url = Uri.parse('http://localhost:3000/todo/tasklist/$username');
     var res = await http.get(
       url,
       headers: <String, String>{'Content-Type': 'application/json'},
@@ -33,7 +36,9 @@ class HomePageState extends State<HomePage> {
   }
 
   void removeTask(Task task) async {
-    final url = Uri.parse('http://localhost:3000/todo/removetasklist/123');
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? username = sharedPreferences.getString('userId');
+    final url = Uri.parse('http://localhost:3000/todo/removetasklist/$username');
     var res = await http.put(
       url,
       headers: <String, String>{'Content-Type': 'application/json'},

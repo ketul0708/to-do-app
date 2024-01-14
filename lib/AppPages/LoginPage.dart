@@ -45,7 +45,7 @@ class LoginFormState extends State<LoginForm> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    final url = Uri.parse("https://0uzp72ur4a.execute-api.ap-south-1.amazonaws.com/dev/stockscreener/login");
+    final url = Uri.parse('http://localhost:3000/todo/login');
     var res = await http.post(
       url,
       headers: <String, String>{'Content-Type': 'application/json'},

@@ -6,7 +6,6 @@ import 'package:jumping_dot/jumping_dot.dart';
 
 import '../Common/ErrorBox.dart';
 
-
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
 
@@ -47,7 +46,7 @@ class SignUpFormState extends State<SignUpForm> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    final url = Uri.parse("https://0uzp72ur4a.execute-api.ap-south-1.amazonaws.com/dev/stockscreener/signup");
+    final url = Uri.parse("http://localhost:3000/todo/signup");
     var res = await http.post(
       url,
       headers: <String, String>{'Content-Type': 'application/json'},
@@ -85,9 +84,6 @@ class SignUpFormState extends State<SignUpForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset('assets/images/logo.png',
-            height: 140,),
-          const SizedBox(height: 16.0),
           const Text("Create new Account", style: TextStyle(fontSize: 20),),
           const SizedBox(height: 16.0),
           errorBox,

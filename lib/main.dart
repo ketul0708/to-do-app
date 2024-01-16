@@ -86,7 +86,7 @@ Future<void> main() async {
         child:  MaterialApp.router(
           debugShowCheckedModeBanner: false,
           routerConfig: router,
-          title: 'Stock Trading App',
+          title: 'To-Do App',
           theme: ThemeData.dark(),
           darkTheme: ThemeData.dark(),
         )

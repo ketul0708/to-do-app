@@ -49,6 +49,11 @@ class HomePageState extends State<HomePage> {
     debugPrint(res.body.toString());
   }
 
+  Future<void> logOut() async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool("session", false);
+  }
+
   @override
   void initState(){
     getTasklist();
@@ -62,6 +67,15 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("To Do App"),
+        actions: [
+          Container(
+            padding: EdgeInsets.all(10),
+            child: TextButton(onPressed: (){
+            logOut();
+            context.go("/");
+          }, child: const Text("Log Out", style: TextStyle(fontSize: 20),)),
+          )
+        ],
       ),
       body: ListView.builder(
         itemCount: tasklist.length,

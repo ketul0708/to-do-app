@@ -7,6 +7,7 @@ import 'package:flutter_1/Common/ErrorBox.dart';
 import 'package:flutter_1/Models/TaskList.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:random_string/random_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/Task.dart';
 import 'package:http/http.dart' as http;
@@ -45,7 +46,7 @@ class NewTaskPageState extends State<NewTaskPage>{
       Uri.parse(apiUrl),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'task':[task.title, task.desc, task.priority, task.deadline]
+        'task':[task.id, task.title, task.desc, task.priority, task.deadline]
       }),
     );
 
@@ -192,9 +193,11 @@ class NewTaskPageState extends State<NewTaskPage>{
               padding: const EdgeInsets.fromLTRB(50, 0, 20, 20),
               child: ElevatedButton(
                 onPressed: () {
+                  String id = randomAlphaNumeric(6);
                   if(validateForm()){
                     tasklist.tasklist.add(
                         Task(
+                          id: id,
                           title: _titleTextController.text,
                           desc: _descTextController.text,
                           priority: selectedPriority,
@@ -203,6 +206,7 @@ class NewTaskPageState extends State<NewTaskPage>{
                     );
                     tasklistProvider.setTasklist(tasklist);
                     addTask(Task(
+                        id: id,
                         title: _titleTextController.text,
                         desc: _descTextController.text,
                         priority: selectedPriority,

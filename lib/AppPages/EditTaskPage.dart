@@ -22,7 +22,7 @@ class EditTaskPage extends StatefulWidget{
 
 class EditTaskPageState extends State<EditTaskPage>{
 
-  Task originalTask = Task(title: editTask.title, desc: editTask.desc, priority: editTask.priority, deadline: editTask.deadline,);
+  Task originalTask = Task(id: editTask.id, title: editTask.title, desc: editTask.desc, priority: editTask.priority, deadline: editTask.deadline,);
   final TextEditingController _titleTextController = TextEditingController(text: editTask.title);
   final TextEditingController _descTextController = TextEditingController(text: editTask.desc);
   String title = editTask.title;
@@ -40,39 +40,26 @@ class EditTaskPageState extends State<EditTaskPage>{
     }
   }
 
-  void removeTask(Task task) async {
+  Future<void> _editTask(Task task) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? username = sharedPreferences.getString('userId');
-    final url = Uri.parse('http://localhost:3000/todo/removetasklist/$username');
-    var res = await http.put(
-        url,
-        headers: <String, String>{'Content-Type': 'application/json'},
-        body: jsonEncode({'task':[task.title, task.desc, task.priority, task.deadline]})
-    );
-
-    debugPrint(res.body.toString());
-  }
-
-  void addTask(Task task) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? username = sharedPreferences.getString('userId');
-    String apiUrl = 'http://localhost:3000/todo/tasklist/$username';
+    String apiUrl = 'http://localhost:3000/todo/edit/$username';
 
     final response = await http.put(
       Uri.parse(apiUrl),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'task':[task.title, task.desc, task.priority, task.deadline]
+        'task':[task.id, task.title, task.desc, task.priority, task.deadline]
       }),
     );
-
+    debugPrint(response.body.toString());
     if (response.statusCode == 200) {
-      debugPrint('Item added successfully');
+      debugPrint('Task updated successfully');
     } else {
       debugPrint('Failed to add item. Error: ${response.statusCode}');
     }
   }
-
+  
   @override
   Widget build(BuildContext context){
     TasklistProvider tasklistProvider = context.watch<TasklistProvider>();
@@ -211,13 +198,14 @@ class EditTaskPageState extends State<EditTaskPage>{
               child: ElevatedButton(
                 onPressed: () {
                   if(validateForm()){
-                    removeTask(originalTask);
-                    addTask(Task(
+                    _editTask(Task(
+                        id: originalTask.id,
                         title: _titleTextController.text,
                         desc: _descTextController.text,
                         priority: selectedPriority,
                         deadline: selectedDate
-                    ));
+                      )
+                    );
                     context.go("/home");
                   }
                   else{

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,7 +21,7 @@ class EditTaskPage extends StatefulWidget{
 
 class EditTaskPageState extends State<EditTaskPage>{
 
-  Task originalTask = Task(id: editTask.id, title: editTask.title, desc: editTask.desc, priority: editTask.priority, deadline: editTask.deadline, completed: editTask.completed);
+  Task originalTask = Task(id: editTask.id, title: editTask.title, desc: editTask.desc, priority: editTask.priority, deadline: editTask.deadline, completed: editTask.completed, start: editTask.start, end: editTask.end);
   final TextEditingController _titleTextController = TextEditingController(text: editTask.title);
   final TextEditingController _descTextController = TextEditingController(text: editTask.desc);
   String title = editTask.title;
@@ -49,7 +48,7 @@ class EditTaskPageState extends State<EditTaskPage>{
       Uri.parse(apiUrl),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'task':[task.id, task.title, task.desc, task.priority, task.deadline]
+        'task':[task.id, task.title, task.desc, task.priority, task.deadline, task.completed, task.start, task.end]
       }),
     );
     debugPrint(response.body.toString());
@@ -204,7 +203,9 @@ class EditTaskPageState extends State<EditTaskPage>{
                         desc: _descTextController.text,
                         priority: selectedPriority,
                         deadline: selectedDate,
-                        completed: editTask.completed
+                        completed: editTask.completed,
+                        start: originalTask.start,
+                        end: originalTask.end
                       )
                     );
                     context.go("/home");

@@ -46,7 +46,7 @@ class NewTaskPageState extends State<NewTaskPage>{
       Uri.parse(apiUrl),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'task':[task.id, task.title, task.desc, task.priority, task.deadline]
+        'task':[task.id, task.title, task.desc, task.priority, task.deadline, task.completed, task.start, task.end]
       }),
     );
 
@@ -202,7 +202,9 @@ class NewTaskPageState extends State<NewTaskPage>{
                           desc: _descTextController.text,
                           priority: selectedPriority,
                           deadline: selectedDate,
-                          completed: "False"
+                          completed: "False",
+                          start: "",
+                          end: ""
                         )
                     );
                     tasklistProvider.setTasklist(tasklist);
@@ -212,7 +214,9 @@ class NewTaskPageState extends State<NewTaskPage>{
                         desc: _descTextController.text,
                         priority: selectedPriority,
                         deadline: selectedDate,
-                        completed: "False"
+                        completed: "False",
+                        start: "",
+                        end: ""
                       )
                     );
                     context.go("/home");

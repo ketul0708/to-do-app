@@ -8,7 +8,8 @@ import '../Models/Task.dart';
 import 'package:http/http.dart' as http;
 
 int editIndex = -1;
-Task editTask = Task(id: "" ,title: "", desc: "", priority: "", deadline: "", completed: "");
+Task editTask = Task(id: "" ,title: "", desc: "", priority: "", deadline: "", completed: "", start: "", end: "");
+Task startTask = Task(id: "" ,title: "", desc: "", priority: "", deadline: "", completed: "", start: "", end: "");
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -42,7 +43,7 @@ class HomePageState extends State<HomePage> {
     var res = await http.put(
       url,
       headers: <String, String>{'Content-Type': 'application/json'},
-      body: jsonEncode({'task':[task.id, task.title, task.desc, task.priority, task.deadline]})
+      body: jsonEncode({'task':[task.id, task.title, task.desc, task.priority, task.deadline, task.completed, task.start, task.end]})
     );
 
     debugPrint(res.body.toString());
@@ -66,7 +67,7 @@ class HomePageState extends State<HomePage> {
         itemCount: tasklist.length,
         itemBuilder: (context, index){
           List<dynamic> taskData = tasklist[index];
-          Task task = Task(id: taskData[0], title: taskData[1], desc: taskData[2], priority: taskData[3], deadline: taskData[4], completed: taskData[5]);
+          Task task = Task(id: taskData[0], title: taskData[1], desc: taskData[2], priority: taskData[3], deadline: taskData[4], completed: taskData[5], start: taskData[6], end: taskData[7]);
           return Card(
             child: ListTile(
               title: Text(task.completed=="False" ? task.title : "${task.title} - Completed"),
@@ -77,6 +78,7 @@ class HomePageState extends State<HomePage> {
                   IconButton(
                     icon: const Icon(Icons.play_circle),
                     onPressed: () {
+                      startTask = task;
                       context.go("/startTask");
                     },
                   ),

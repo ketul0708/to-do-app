@@ -22,7 +22,7 @@ class EditTaskPage extends StatefulWidget{
 
 class EditTaskPageState extends State<EditTaskPage>{
 
-  Task originalTask = Task(id: editTask.id, title: editTask.title, desc: editTask.desc, priority: editTask.priority, deadline: editTask.deadline,);
+  Task originalTask = Task(id: editTask.id, title: editTask.title, desc: editTask.desc, priority: editTask.priority, deadline: editTask.deadline, completed: editTask.completed);
   final TextEditingController _titleTextController = TextEditingController(text: editTask.title);
   final TextEditingController _descTextController = TextEditingController(text: editTask.desc);
   String title = editTask.title;
@@ -203,7 +203,8 @@ class EditTaskPageState extends State<EditTaskPage>{
                         title: _titleTextController.text,
                         desc: _descTextController.text,
                         priority: selectedPriority,
-                        deadline: selectedDate
+                        deadline: selectedDate,
+                        completed: editTask.completed
                       )
                     );
                     context.go("/home");

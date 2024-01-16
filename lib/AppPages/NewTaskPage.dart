@@ -201,7 +201,8 @@ class NewTaskPageState extends State<NewTaskPage>{
                           title: _titleTextController.text,
                           desc: _descTextController.text,
                           priority: selectedPriority,
-                          deadline: selectedDate
+                          deadline: selectedDate,
+                          completed: "False"
                         )
                     );
                     tasklistProvider.setTasklist(tasklist);
@@ -210,7 +211,8 @@ class NewTaskPageState extends State<NewTaskPage>{
                         title: _titleTextController.text,
                         desc: _descTextController.text,
                         priority: selectedPriority,
-                        deadline: selectedDate
+                        deadline: selectedDate,
+                        completed: "False"
                       )
                     );
                     context.go("/home");

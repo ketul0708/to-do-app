@@ -8,7 +8,7 @@ import '../Models/Task.dart';
 import 'package:http/http.dart' as http;
 
 int editIndex = -1;
-Task editTask = Task(id: "" ,title: "", desc: "", priority: "", deadline: "");
+Task editTask = Task(id: "" ,title: "", desc: "", priority: "", deadline: "", completed: "");
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -66,10 +66,10 @@ class HomePageState extends State<HomePage> {
         itemCount: tasklist.length,
         itemBuilder: (context, index){
           List<dynamic> taskData = tasklist[index];
-          Task task = Task(id: taskData[0], title: taskData[1], desc: taskData[2], priority: taskData[3], deadline: taskData[4]);
+          Task task = Task(id: taskData[0], title: taskData[1], desc: taskData[2], priority: taskData[3], deadline: taskData[4], completed: taskData[5]);
           return Card(
             child: ListTile(
-              title: Text(task.title),
+              title: Text(task.completed=="False" ? task.title : "${task.title} - Completed"),
               subtitle: Text(task.desc),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,

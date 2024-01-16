@@ -69,7 +69,7 @@ class HomePageState extends State<HomePage> {
         title: const Text("To Do App"),
         actions: [
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: TextButton(onPressed: (){
             logOut();
             context.go("/");
@@ -84,8 +84,17 @@ class HomePageState extends State<HomePage> {
           Task task = Task(id: taskData[0], title: taskData[1], desc: taskData[2], priority: taskData[3], deadline: taskData[4], completed: taskData[5], start: taskData[6], end: taskData[7]);
           return Card(
             child: ListTile(
-              title: Text(task.completed=="False" ? task.title : "${task.title} - Completed"),
-              subtitle: Text(task.desc),
+              title: Text(task.completed=="False" ? task.title : "${task.title} - Completed", style: TextStyle(fontSize: 18, color: task.priority=="High" ? Colors.red : (task.priority=="Medium" ? Colors.yellow : Colors.green)),),
+              subtitle: Container(
+                alignment: Alignment.centerLeft,
+                width: 300,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, 
+                  children: [
+                    Text(task.desc), 
+                    const SizedBox(height: 5,),
+                    Text("Due - ${task.deadline}")]),
+              ),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

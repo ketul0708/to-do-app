@@ -58,6 +58,7 @@ class LoginFormState extends State<LoginForm> {
       pref.setString("userId", data['userId']);
       pref.setString("password", data['password']);
       pref.setBool("session", true);
+      await Future.delayed(const Duration(seconds: 2));
       setState(() {
         _loggedIn=true;
         libChild = const Text("Log In");

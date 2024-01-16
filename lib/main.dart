@@ -35,6 +35,7 @@ Future<void> main() async {
             return const SignUpPage();
           }
       ),
+      
       GoRoute(
           name: 'account',
           path: '/account',

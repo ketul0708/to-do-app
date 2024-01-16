@@ -45,7 +45,7 @@ class SignUpFormState extends State<SignUpForm> {
     // Perform sign-up logic here
     String email = _emailController.text;
     String password = _passwordController.text;
-
+    await Future.delayed(const Duration(seconds: 2));
     final url = Uri.parse("http://localhost:3000/todo/signup");
     var res = await http.post(
       url,
